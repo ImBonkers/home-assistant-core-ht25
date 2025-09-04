@@ -1473,25 +1473,3 @@ jobs:
       - name: Check dirty
         run: |
           ./script/check_dirty
-
-  coverage-partial:
-    name: Upload test coverage to Codecov (partial suite)
-    if: needs.info.outputs.skip_coverage != 'true'
-    runs-on: ubuntu-24.04
-    needs:
-      - info
-      - pytest-partial
-    timeout-minutes: 10
-    steps:
-      - name: Check out code from GitHub
-        uses: actions/checkout@v5.0.0
-      - name: Download all coverage artifacts
-        uses: actions/download-artifact@v5.0.0
-        with:
-          pattern: coverage-*
-      - name: Upload coverage to Codecov
-        if: needs.info.outputs.test_full_suite == 'false'
-        uses: codecov/codecov-action@v5.5.0
-        with:
-          fail_ci_if_error: true
-          token: ${{ secrets.CODECOV_TOKEN }}
